@@ -3,11 +3,13 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { TimesheetsComponent } from "./timesheets/timesheets.component";
 import { TimesheetDetailComponent } from "./timesheet-detail/timesheet-detail.component";
+import { NewsComponent } from "./news/news.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/timesheets", pathMatch: "full" },
   { path: "detail/:id", component: TimesheetDetailComponent },
   { path: "timesheets", component: TimesheetsComponent },
+  { path: "news", component: NewsComponent },
 ];
 
 @NgModule({

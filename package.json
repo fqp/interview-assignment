@@ -21,6 +21,8 @@
     "@angular/platform-browser": "17.2.4",
     "@angular/platform-browser-dynamic": "17.2.4",
     "@angular/router": "17.2.4",
+    "@ngrx/store": "17.0.0",
+    "@ngrx/store-devtools": "17.0.0",
     "angular-in-memory-web-api": "~0.17.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
