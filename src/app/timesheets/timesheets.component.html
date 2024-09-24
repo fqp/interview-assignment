@@ -1,0 +1,30 @@
+<app-timesheet-search />
+
+<ul class="timesheets">
+  <li *ngFor="let timesheet of timesheets">
+    <a routerLink="/detail/{{timesheet.id}}">
+      <span class="badge">{{ timesheet.startDateTime | date: 'short' }} -
+        {{ timesheet.endDateTime | date: 'short' }}</span>
+        {{ timesheet.name }}
+    </a>
+    <button type="button" class="delete" title="delete timesheet"
+      (click)="delete(timesheet)">x</button>
+  </li>
+</ul>
+
+<div>
+  <label for="new-timesheet">Timesheet name: </label>
+  <input id="new-timesheet" #timesheetName />
+
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button type="button" class="add-button" (click)="add(timesheetName.value); timesheetName.value=''">
+    Add timesheet
+  </button>
+</div>
+
+
+<!--
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at https://angular.io/license
+-->
