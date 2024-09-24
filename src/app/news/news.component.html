@@ -1,0 +1,16 @@
+<h1>News items</h1>
+<ul>
+  @for ( item of (news$|async); track $index) {
+  <li>
+    {{ item.text }}
+    <button (click)="onSelect(item.id)">select</button>
+  </li>
+  }
+</ul>
+
+<input [(ngModel)]="name" (change)="onInputChange()" />
+<button class="add-button" (click)="addNews()">Add</button>
+
+<div *ngIf="selectedItem$ | async as item">
+  <div>selected new item {{ item.text }}</div>
+</div>
