@@ -1,0 +1,45 @@
+<app-timesheet-search />
+
+@if (timesheets.isLoading()) {
+  <p>Loading timesheets…</p>
+} @else if (timesheets.error()) {
+  <p class="error">
+    Could not load timesheets. <button type="button" (click)="timesheets.reload()">Retry</button>
+  </p>
+} @else {
+  <ul class="timesheets">
+    @for (timesheet of timesheets.value(); track timesheet.id) {
+      <li>
+        <a [routerLink]="['/detail', timesheet.id]">
+          <span class="badge">
+            {{ timesheet.startDateTime | date: 'short' }} —
+            {{ timesheet.endDateTime | date: 'short' }}
+          </span>
+          {{ timesheet.name }}
+        </a>
+        <button
+          type="button"
+          class="delete"
+          [attr.aria-label]="'Delete timesheet for ' + timesheet.name"
+          (click)="delete(timesheet)"
+        >
+          x
+        </button>
+      </li>
+    } @empty {
+      <li class="empty">No timesheets yet.</li>
+    }
+  </ul>
+}
+
+<div>
+  <label for="new-timesheet">Timesheet name: </label>
+  <input
+    id="new-timesheet"
+    [value]="newName()"
+    (input)="newName.set($any($event.target).value)"
+    (keyup.enter)="add()"
+  />
+
+  <button type="button" class="add-button" (click)="add()">Add timesheet</button>
+</div>

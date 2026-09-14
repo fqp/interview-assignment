@@ -1,0 +1,12 @@
+<div id="search-component">
+  <label for="search-box">Timesheet Search</label>
+  <input id="search-box" [value]="term()" (input)="term.set($any($event.target).value)" />
+
+  <ul class="search-result">
+    @for (timesheet of results.value(); track timesheet.id) {
+      <li>
+        <a [routerLink]="['/detail', timesheet.id]">{{ timesheet.name }}</a>
+      </li>
+    }
+  </ul>
+</div>

@@ -1,58 +1,55 @@
-import { Injectable } from "@angular/core";
-import { InMemoryDbService } from "angular-in-memory-web-api";
-import { Timesheet } from "./timesheet";
+import { Injectable } from '@angular/core';
+import { InMemoryDbService } from 'angular-in-memory-web-api';
 
-@Injectable({
-  providedIn: "root",
-})
+import { Timesheet } from './timesheet';
+
+const PERSONS = [
+  'Dr. Nice',
+  'Bombasto',
+  'Celeritas',
+  'Magneta',
+  'RubberMan',
+  'Dynama',
+  'Dr. IQ',
+  'Magma',
+  'Tornado',
+];
+
+@Injectable({ providedIn: 'root' })
 export class InMemoryDataService implements InMemoryDbService {
-  createDb() {
-    const timesheets = [];
+  createDb(): { timesheets: Timesheet[] } {
+    const timesheets: Timesheet[] = [];
+
     for (let i = 0; i < 10; i++) {
-      const startDateTime = getRandomStartDateTime();
+      const startDateTime = randomStartDateTime();
       timesheets.push({
         id: i + 1,
-        name: persons[i % persons.length],
-        startDateTime: startDateTime,
-        endDateTime: getRandomEndDateTime(startDateTime),
+        name: PERSONS[i % PERSONS.length],
+        startDateTime,
+        endDateTime: randomEndDateTime(startDateTime),
       });
     }
 
     return { timesheets };
   }
 
-  // Overrides the genId method to ensure that a timesheet always has an id.
-  // If the timesheets array is empty,
-  // the method below returns the initial number (11).
-  // if the timesheets array is not empty, the method below returns the highest
-  // timesheet id + 1.
+  /**
+   * Overrides `genId` so a timesheet always gets an id. Returns 11 for an empty
+   * database, otherwise the highest existing id plus one.
+   */
   genId(timesheets: Timesheet[]): number {
-    return timesheets.length > 0
-      ? Math.max(...timesheets.map((timesheet) => timesheet.id)) + 1
-      : 11;
+    return timesheets.length > 0 ? Math.max(...timesheets.map((t) => t.id)) + 1 : 11;
   }
 }
 
-const persons = [
-  "Dr. Nice",
-  "Bombasto",
-  "Celeritas",
-  "Magneta",
-  "RubberMan",
-  "Dynama",
-  "Dr. IQ",
-  "Magma",
-  "Tornado",
-];
-
-function getRandomStartDateTime() {
+function randomStartDateTime(): Date {
   const date = new Date();
   date.setHours(Math.floor(Math.random() * 24));
   date.setMinutes(Math.floor(Math.random() * 60));
   return date;
 }
 
-function getRandomEndDateTime(after: Date) {
+function randomEndDateTime(after: Date): Date {
   const date = new Date(after);
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -60,9 +57,3 @@ function getRandomEndDateTime(after: Date) {
   date.setMinutes(minutes + Math.floor(Math.random() * (60 - minutes)));
   return date;
 }
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at https://angular.io/license
-*/

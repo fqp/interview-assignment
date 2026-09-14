@@ -1,0 +1,23 @@
+@if (timesheet.isLoading()) {
+  <p>Loading timesheet…</p>
+} @else if (timesheet.value(); as current) {
+  <h2>{{ current.name | uppercase }} Details</h2>
+
+  <div><span>id: </span>{{ current.id }}</div>
+
+  <div>
+    <label for="timesheet-name">Timesheet name: </label>
+    <input
+      id="timesheet-name"
+      placeholder="Timesheet name"
+      [value]="name()"
+      (input)="name.set($any($event.target).value)"
+    />
+  </div>
+
+  <button type="button" (click)="goBack()">go back</button>
+  <button type="button" (click)="save()">save</button>
+} @else {
+  <p class="error">Timesheet {{ id() }} could not be loaded.</p>
+  <button type="button" (click)="goBack()">go back</button>
+}

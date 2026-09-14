@@ -1,21 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
+/** Collects human-readable messages about what the app is doing. */
 @Injectable({ providedIn: 'root' })
 export class MessageService {
-  messages: string[] = [];
+  private readonly log = signal<readonly string[]>([]);
 
-  add(message: string) {
-    this.messages.push(message);
+  readonly messages = this.log.asReadonly();
+
+  add(message: string): void {
+    this.log.update((messages) => [...messages, message]);
   }
 
-  clear() {
-    this.messages = [];
+  clear(): void {
+    this.log.set([]);
   }
 }
-
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at https://angular.io/license
-*/

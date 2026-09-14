@@ -1,0 +1,11 @@
+<h1>{{ title }}</h1>
+
+<router-outlet />
+
+<button type="button" class="toggle-messages" (click)="toggleMessages()">
+  {{ showMessages() ? 'Hide' : 'Show' }} message log
+</button>
+
+@if (showMessages()) {
+  <app-messages />
+}
