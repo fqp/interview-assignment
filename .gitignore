@@ -45,3 +45,6 @@ Thumbs.db
 
 # Playwright MCP session artifacts
 .playwright-mcp/
+
+# Interviewer answer key — never commit this
+INTERVIEWER-NOTES.md
