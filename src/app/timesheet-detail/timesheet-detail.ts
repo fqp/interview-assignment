@@ -25,14 +25,13 @@ export class TimesheetDetail {
     this.location.back();
   }
 
-  protected save(): void {
+  protected async save(): Promise<void> {
     const timesheet = this.timesheet.value();
     if (!timesheet) {
       return;
     }
 
-    this.timesheetService
-      .updateTimesheet({ ...timesheet, name: this.name() })
-      .subscribe(() => this.goBack());
+    await this.timesheetService.updateTimesheet({ ...timesheet, name: this.name() });
+    this.goBack();
   }
 }
