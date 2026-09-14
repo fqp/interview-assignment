@@ -1,0 +1,38 @@
+.weekly-summary {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 0.5rem 1rem 1rem;
+  margin: 1rem 0;
+}
+
+.weekly-summary h2 {
+  margin-top: 0.5rem;
+}
+
+.weekly-summary table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 400px;
+}
+
+.weekly-summary th,
+.weekly-summary td {
+  text-align: left;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.weekly-summary td.hours {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.weekly-summary tfoot td {
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.overtime {
+  color: #a80000;
+  font-size: 0.9rem;
+}

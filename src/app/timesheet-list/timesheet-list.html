@@ -1,5 +1,7 @@
 <app-timesheet-search />
 
+<app-weekly-summary [timesheets]="timesheets.value()" />
+
 @if (timesheets.isLoading()) {
   <p>Loading timesheets…</p>
 } @else if (timesheets.error()) {
