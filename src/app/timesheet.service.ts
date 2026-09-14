@@ -1,6 +1,6 @@
 import { Injectable, Signal, inject } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { Timesheet } from './timesheet';
 
@@ -26,47 +26,25 @@ export class TimesheetService {
     });
   }
 
-  /** GET timesheets whose name contains `term`. */
-  searchTimesheets(term: string): Observable<Timesheet[]> {
-    if (!term.trim()) {
-      return of([]);
-    }
-
-    return this.http
-      .get<Timesheet[]>(`${this.timesheetsUrl}/?name=${term}`)
-      .pipe(catchError(this.handleError<Timesheet[]>('searchTimesheets', [])));
+  /** A resource holding the timesheets whose name matches `term`. */
+  searchResource(term: Signal<string>) {
+    return httpResource<Timesheet[]>(() => `${this.timesheetsUrl}/?name=${term()}`, {
+      defaultValue: [],
+    });
   }
 
   /** POST: add a new timesheet to the server. */
-  addTimesheet(timesheet: Omit<Timesheet, 'id'>): Observable<Timesheet | undefined> {
-    return this.http
-      .post<Timesheet>(this.timesheetsUrl, timesheet)
-      .pipe(catchError(this.handleError<Timesheet | undefined>('addTimesheet', undefined)));
+  async addTimesheet(timesheet: Omit<Timesheet, 'id'>): Promise<Timesheet> {
+    return await firstValueFrom(this.http.post<Timesheet>(this.timesheetsUrl, timesheet));
   }
 
   /** PUT: update the timesheet on the server. */
-  updateTimesheet(timesheet: Timesheet): Observable<unknown> {
-    return this.http
-      .put(this.timesheetsUrl, timesheet)
-      .pipe(catchError(this.handleError<unknown>('updateTimesheet', undefined)));
+  async updateTimesheet(timesheet: Timesheet): Promise<void> {
+    await firstValueFrom(this.http.put(this.timesheetsUrl, timesheet));
   }
 
   /** DELETE: remove the timesheet from the server. */
-  deleteTimesheet(id: number): Observable<unknown> {
-    return this.http
-      .delete(`${this.timesheetsUrl}/${id}`)
-      .pipe(catchError(this.handleError<unknown>('deleteTimesheet', undefined)));
-  }
-
-  /**
-   * Handles a failed HTTP operation by logging it and letting the app carry on
-   * with a fallback value.
-   */
-  private handleError<T>(operation: string, result: T) {
-    return (error: unknown): Observable<T> => {
-      // TODO: report this to real logging infrastructure instead of the console.
-      console.error(`${operation} failed`, error);
-      return of(result);
-    };
+  async deleteTimesheet(id: number): Promise<void> {
+    await firstValueFrom(this.http.delete(`${this.timesheetsUrl}/${id}`));
   }
 }

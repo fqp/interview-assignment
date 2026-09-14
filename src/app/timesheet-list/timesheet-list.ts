@@ -18,25 +18,25 @@ export class TimesheetList {
   protected readonly timesheets = this.timesheetService.timesheetsResource();
   protected readonly newName = signal('');
 
-  protected add(): void {
+  protected async add(): Promise<void> {
     const name = this.newName().trim();
     if (!name) {
       return;
     }
 
     const startDateTime = new Date();
-    this.timesheetService
-      .addTimesheet({ name, startDateTime, endDateTime: startDateTime })
-      .subscribe((created) => {
-        if (created) {
-          this.timesheets.update((timesheets) => [...timesheets, created]);
-          this.newName.set('');
-        }
-      });
+    const created = await this.timesheetService.addTimesheet({
+      name,
+      startDateTime,
+      endDateTime: startDateTime,
+    });
+
+    this.timesheets.update((timesheets) => [...timesheets, created]);
+    this.newName.set('');
   }
 
-  protected delete(timesheet: Timesheet): void {
+  protected async delete(timesheet: Timesheet): Promise<void> {
     this.timesheets.update((timesheets) => timesheets.filter((t) => t.id !== timesheet.id));
-    this.timesheetService.deleteTimesheet(timesheet.id).subscribe();
+    await this.timesheetService.deleteTimesheet(timesheet.id);
   }
 }
