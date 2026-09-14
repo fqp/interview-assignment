@@ -1,14 +1,12 @@
 import { Injectable, Signal, inject } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 
-import { MessageService } from './message.service';
 import { Timesheet } from './timesheet';
 
 @Injectable({ providedIn: 'root' })
 export class TimesheetService {
   private readonly http = inject(HttpClient);
-  private readonly messageService = inject(MessageService);
 
   private readonly timesheetsUrl = 'api/timesheets';
 
@@ -34,40 +32,30 @@ export class TimesheetService {
       return of([]);
     }
 
-    return this.http.get<Timesheet[]>(`${this.timesheetsUrl}/?name=${term}`).pipe(
-      tap((found) =>
-        this.message(
-          found.length
-            ? `found ${found.length} timesheet(s) matching "${term}"`
-            : `no timesheets matching "${term}"`,
-        ),
-      ),
-      catchError(this.handleError<Timesheet[]>('searchTimesheets', [])),
-    );
+    return this.http
+      .get<Timesheet[]>(`${this.timesheetsUrl}/?name=${term}`)
+      .pipe(catchError(this.handleError<Timesheet[]>('searchTimesheets', [])));
   }
 
   /** POST: add a new timesheet to the server. */
   addTimesheet(timesheet: Omit<Timesheet, 'id'>): Observable<Timesheet | undefined> {
-    return this.http.post<Timesheet>(this.timesheetsUrl, timesheet).pipe(
-      tap((created) => this.message(`added timesheet w/ id=${created.id}`)),
-      catchError(this.handleError<Timesheet | undefined>('addTimesheet', undefined)),
-    );
+    return this.http
+      .post<Timesheet>(this.timesheetsUrl, timesheet)
+      .pipe(catchError(this.handleError<Timesheet | undefined>('addTimesheet', undefined)));
   }
 
   /** PUT: update the timesheet on the server. */
   updateTimesheet(timesheet: Timesheet): Observable<unknown> {
-    return this.http.put(this.timesheetsUrl, timesheet).pipe(
-      tap(() => this.message(`updated timesheet id=${timesheet.id}`)),
-      catchError(this.handleError<unknown>('updateTimesheet', undefined)),
-    );
+    return this.http
+      .put(this.timesheetsUrl, timesheet)
+      .pipe(catchError(this.handleError<unknown>('updateTimesheet', undefined)));
   }
 
   /** DELETE: remove the timesheet from the server. */
   deleteTimesheet(id: number): Observable<unknown> {
-    return this.http.delete(`${this.timesheetsUrl}/${id}`).pipe(
-      tap(() => this.message(`deleted timesheet id=${id}`)),
-      catchError(this.handleError<unknown>('deleteTimesheet', undefined)),
-    );
+    return this.http
+      .delete(`${this.timesheetsUrl}/${id}`)
+      .pipe(catchError(this.handleError<unknown>('deleteTimesheet', undefined)));
   }
 
   /**
@@ -77,13 +65,8 @@ export class TimesheetService {
   private handleError<T>(operation: string, result: T) {
     return (error: unknown): Observable<T> => {
       // TODO: report this to real logging infrastructure instead of the console.
-      console.error(error);
-      this.message(`${operation} failed`);
+      console.error(`${operation} failed`, error);
       return of(result);
     };
-  }
-
-  private message(message: string): void {
-    this.messageService.add(`TimesheetService: ${message}`);
   }
 }

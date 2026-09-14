@@ -27,7 +27,7 @@ npm run format     # prettier
 
 | Path                                | What it does                                                              |
 | ----------------------------------- | ------------------------------------------------------------------------- |
-| `src/app/app.ts`                    | Shell: title, router outlet, message-log toggle                           |
+| `src/app/app.ts`                    | Shell: title and router outlet                                            |
 | `src/app/app.config.ts`             | Application providers — router, `HttpClient`, fake backend                |
 | `src/app/app.routes.ts`             | Routes, with both pages lazily loaded                                     |
 | `src/app/timesheet.ts`              | The `Timesheet` model                                                     |
@@ -35,7 +35,6 @@ npm run format     # prettier
 | `src/app/timesheet-list/`           | The list page: add, delete, navigate to detail                            |
 | `src/app/timesheet-detail/`         | The detail page: rename and save one timesheet                            |
 | `src/app/timesheet-search/`         | Debounced search box                                                      |
-| `src/app/messages/`                 | In-app log of what the service has been doing                             |
 | `src/app/in-memory-data.service.ts` | Seeds the fake backend with ten random timesheets                         |
 
 ## Stack
