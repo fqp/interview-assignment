@@ -5,10 +5,11 @@ import { RouterLink } from '@angular/router';
 import { Timesheet } from '../timesheet';
 import { TimesheetService } from '../timesheet.service';
 import { TimesheetSearch } from '../timesheet-search/timesheet-search';
+import { WeeklySummary } from '../weekly-summary/weekly-summary';
 
 @Component({
   selector: 'app-timesheet-list',
-  imports: [DatePipe, RouterLink, TimesheetSearch],
+  imports: [DatePipe, RouterLink, TimesheetSearch, WeeklySummary],
   templateUrl: './timesheet-list.html',
   styleUrl: './timesheet-list.css',
 })

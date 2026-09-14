@@ -1,0 +1,32 @@
+<section class="weekly-summary">
+  <h2>Week of {{ weekStart | date: 'mediumDate' }}</h2>
+
+  @if (totals().length) {
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Person</th>
+          <th scope="col">Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (total of totals(); track total.name) {
+          <tr>
+            <td>{{ total.name }}</td>
+            <td class="hours">{{ total.hours | number: '1.1-1' }}</td>
+          </tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Total</td>
+          <td class="hours">{{ totalHours() | number: '1.1-1' }}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p class="overtime">{{ overtimeShifts() }} shift(s) over {{ 8 }} hours this week.</p>
+  } @else {
+    <p>No timesheets this week.</p>
+  }
+</section>
